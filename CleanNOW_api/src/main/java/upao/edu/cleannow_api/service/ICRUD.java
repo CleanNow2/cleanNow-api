@@ -1,4 +1,9 @@
 package upao.edu.cleannow_api.service;
 
-public interface ICRUD {
+import upao.edu.cleannow_api.exception.DataAlreadyExistsException;
+
+public interface ICRUD<T, ID> {
+
+    T save(T t) throws Exception, DataAlreadyExistsException;
+
 }
