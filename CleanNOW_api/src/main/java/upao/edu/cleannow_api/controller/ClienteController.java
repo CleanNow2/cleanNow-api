@@ -6,13 +6,12 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import upao.edu.cleannow_api.dto.ClienteDTO;
 import upao.edu.cleannow_api.model.Cliente;
 import upao.edu.cleannow_api.service.IClienteService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/Clientes")
@@ -30,6 +29,11 @@ public class ClienteController {
     public ResponseEntity<ClienteDTO> create(@Valid @RequestBody ClienteDTO dto) throws Exception {
         Cliente obj = service.save(convertToEntity(dto));
         return new ResponseEntity<>(convertToDto(obj), HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Cliente>> readAll() throws Exception {
+        return ResponseEntity.ok(service.readAll());
     }
 
     /////////////////////convert mapper//////////////////
