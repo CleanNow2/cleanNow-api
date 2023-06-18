@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IClienteRepository extends IGenericRepository<Cliente, Integer> {
 
-    boolean existsByNombreOrEmail(String name, String apellido);
+    boolean existsByDniOrNumberPhoneOrEmail(int dni, int numberPhone, String email);
     boolean existsByNombreAndEmail(String name, String email);
 
 

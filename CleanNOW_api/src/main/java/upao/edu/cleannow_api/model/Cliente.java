@@ -22,11 +22,11 @@ public class Cliente{
     private String nombre;
     @Column(name = "apellido",nullable = false, length = 50)
     private String apellido;
-    @Column(name = "dni",nullable = false)
+    @Column(name = "dni",nullable = false, unique = true)
     private int dni;
-    @Column(name = "numberPhone",nullable = false)
+    @Column(name = "numberPhone",nullable = false, unique = true)
     private int numberPhone;
-    @Column(name = "email",nullable = false, length = 50)
+    @Column(name = "email",nullable = false, length = 50, unique = true)
     private String email;
     @Column(name = "password",nullable = false, length = 20)
     private String password;

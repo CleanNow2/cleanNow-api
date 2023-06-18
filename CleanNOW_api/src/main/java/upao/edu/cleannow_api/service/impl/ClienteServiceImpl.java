@@ -2,6 +2,7 @@ package upao.edu.cleannow_api.service.impl;
 
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import upao.edu.cleannow_api.exception.DataAlreadyExistsException;
 import upao.edu.cleannow_api.model.Cliente;
@@ -17,6 +18,8 @@ public class ClienteServiceImpl extends CRUDImpl<Cliente, Integer> implements IC
 
     private final IClienteRepository repo;
 
+    @Autowired
+    private IClienteRepository clienteRepository;
 
     @Override
     protected IGenericRepository<Cliente, Integer> getRepo() {
@@ -25,17 +28,22 @@ public class ClienteServiceImpl extends CRUDImpl<Cliente, Integer> implements IC
 
     @Override
     public Cliente save(Cliente cliente) throws Exception {
-        String name = cliente.getNombre();
+        int dni = cliente.getDni();
+        int phone = cliente.getNumberPhone();
         String email = cliente.getEmail();
 
-        if (isClienteDuplicate(name, email)) {
-            throw new DataAlreadyExistsException("el cliente ya existe con el nombre y/o email que has ingresado.");
+        if (isClienteDuplicate(dni, phone, email)) {
+            throw new DataAlreadyExistsException("el cliente ya existe con el dni o número de celular o email");
         }
-
         return super.save(cliente);
     }
 
-    public boolean isClienteDuplicate(String name, String email) {
-        return repo.existsByNombreOrEmail(name, email);
+    public boolean isClienteDuplicate(int dni, int numberPhone, String email) {
+        return repo.existsByDniOrNumberPhoneOrEmail(dni,numberPhone, email);
+    }
+
+    @Override
+    public boolean existsById(Integer id){
+        return clienteRepository.existsById(id);
     }
 }
