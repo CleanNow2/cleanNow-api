@@ -51,4 +51,16 @@ public class ClienteDTO {
     @Size(min = 3, max = 50)
     private String password;
 
+    @NotNull
+    @NotEmpty
+    @Size(min = 3, max = 50)
+    private String ciudad;
+
+    @NotNull
+    @NotEmpty
+    @Size(min = 3, max = 50)
+    private String rol;
+
+    @Size(min = 0, max = 100)
+    private String preferencias;
 }

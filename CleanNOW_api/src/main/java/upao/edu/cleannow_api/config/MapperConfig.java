@@ -6,16 +6,17 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import upao.edu.cleannow_api.dto.ClienteDTO;
+import upao.edu.cleannow_api.dto.ProfesionalDTO;
 import upao.edu.cleannow_api.model.Cliente;
+import upao.edu.cleannow_api.model.Profesional;
 
 @Configuration
 public class MapperConfig {
 
     @Primary
     @Bean("ClienteMapper")
-    public ModelMapper modelMapper(){
+    public ModelMapper clienteMapper(){
         ModelMapper mapper = new ModelMapper();
-
 
         TypeMap<ClienteDTO, Cliente> typeMap1 = mapper.createTypeMap(ClienteDTO.class, Cliente.class);
         TypeMap<Cliente, ClienteDTO> typeMap2 = mapper.createTypeMap(Cliente.class, ClienteDTO.class);
@@ -31,6 +32,48 @@ public class MapperConfig {
 
         typeMap1.addMapping(ClienteDTO::getPassword, (dest, v) -> dest.setPassword((String) v));
         typeMap2.addMapping(Cliente::getPassword, (dest, v) -> dest.setPassword((String) v));
+
+        typeMap1.addMapping(ClienteDTO::getCiudad, (dest, v) -> dest.setCiudad((String) v));
+        typeMap2.addMapping(Cliente::getCiudad, (dest, v) -> dest.setCiudad((String) v));
+
+        typeMap1.addMapping(ClienteDTO::getPreferencias, (dest, v) -> dest.setPreferencias((String) v));
+        typeMap2.addMapping(Cliente::getPreferencias, (dest, v) -> dest.setPreferencias((String) v));
+
+        typeMap1.addMapping(ClienteDTO::getRol, (dest, v) -> dest.setRol((String) v));
+        typeMap2.addMapping(Cliente::getRol, (dest, v) -> dest.setRol((String) v));
+        return mapper;
+    }
+
+    @Bean("ProfesionalMapper")
+    public ModelMapper profesionalMapper(){
+        ModelMapper mapper = new ModelMapper();
+
+        TypeMap<ProfesionalDTO, Profesional> typeMap1 = mapper.createTypeMap(ProfesionalDTO.class, Profesional.class);
+        TypeMap<Profesional, ProfesionalDTO> typeMap2 = mapper.createTypeMap(Profesional.class, ProfesionalDTO.class);
+
+        typeMap1.addMapping(ProfesionalDTO::getNombre, (dest, v) -> dest.setNombre((String) v));
+        typeMap2.addMapping(Profesional::getNombre, (dest, v) -> dest.setNombre((String) v));
+
+        typeMap1.addMapping(ProfesionalDTO::getApellido, (dest, v) -> dest.setApellido((String) v));
+        typeMap2.addMapping(Profesional::getApellido, (dest, v) -> dest.setApellido((String) v));
+
+        typeMap1.addMapping(ProfesionalDTO::getEmail, (dest, v) -> dest.setEmail((String) v));
+        typeMap2.addMapping(Profesional::getEmail, (dest, v) -> dest.setEmail((String) v));
+
+        typeMap1.addMapping(ProfesionalDTO::getPassword, (dest, v) -> dest.setPassword((String) v));
+        typeMap2.addMapping(Profesional::getPassword, (dest, v) -> dest.setPassword((String) v));
+
+        typeMap1.addMapping(ProfesionalDTO::getCiudad, (dest, v) -> dest.setCiudad((String) v));
+        typeMap2.addMapping(Profesional::getCiudad, (dest, v) -> dest.setCiudad((String) v));
+
+        typeMap1.addMapping(ProfesionalDTO::getRol, (dest, v) -> dest.setRol((String) v));
+        typeMap2.addMapping(Profesional::getRol, (dest, v) -> dest.setRol((String) v));
+
+        typeMap1.addMapping(ProfesionalDTO::getExperiencia, (dest, v) -> dest.setExperiencia((String) v));
+        typeMap2.addMapping(Profesional::getExperiencia, (dest, v) -> dest.setExperiencia((String) v));
+
+        typeMap1.addMapping(ProfesionalDTO::getEspecialidades, (dest, v) -> dest.setEspecialidades((String) v));
+        typeMap2.addMapping(Profesional::getEspecialidades, (dest, v) -> dest.setEspecialidades((String) v));
 
         return mapper;
     }

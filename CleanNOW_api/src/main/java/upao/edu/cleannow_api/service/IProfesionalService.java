@@ -1,4 +1,9 @@
 package upao.edu.cleannow_api.service;
 
-public interface IProfesionalService {
+import upao.edu.cleannow_api.model.Profesional;
+
+public interface IProfesionalService extends ICRUD<Profesional, Integer>{
+    public boolean isProfesionalDuplicate(String dni, String email, int numberPhone);
+    public boolean isProfesionalDuplicateUpdate(String dni, String email, int numberPhone);
+
 }
