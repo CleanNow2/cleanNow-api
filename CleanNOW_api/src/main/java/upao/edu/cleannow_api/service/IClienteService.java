@@ -3,6 +3,6 @@ package upao.edu.cleannow_api.service;
 import upao.edu.cleannow_api.model.Cliente;
 
 public interface IClienteService extends ICRUD<Cliente, Integer>{
-    public boolean isClienteDuplicate(String dni, String email, int numberPhone);
-    public boolean isClienteDuplicateUpdate(String dni, String email, int numberPhone);
+    public boolean isClienteDuplicate(String dni, String email, String numberPhone);
+    public boolean isClienteDuplicateUpdate(String dni, String email, String numberPhone);
 }

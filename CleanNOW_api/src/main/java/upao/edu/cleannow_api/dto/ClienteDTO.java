@@ -1,6 +1,5 @@
 package upao.edu.cleannow_api.dto;
 
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -14,7 +13,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ClienteDTO {
 
-    private Integer idCliente;
+    private Integer idUser;
 
     @NotNull
     @NotEmpty
@@ -30,14 +29,15 @@ public class ClienteDTO {
     private String apellido;
 
     @NotNull
-    @Min(value = 10000000)
-    @Max(value = 99999999)
-    private int dni;
+    @NotEmpty
+    @Size(min = 8, max = 8)
+    @Pattern(regexp = "\\d+")
+    private String dni;
 
     @NotNull
-    @Min(value = 900000000)
-    @Max(value = 999999999)
-    private int numberPhone;
+    @Pattern(regexp = "9\\d{8}")
+    @Size(min = 9, max = 9)
+    private String numberPhone;
 
     @NotNull
     @NotEmpty
@@ -48,7 +48,8 @@ public class ClienteDTO {
 
     @NotNull
     @NotEmpty
-    @Size(min = 3, max = 50)
+    @Size(min = 8, max = 50)
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$")
     private String password;
 
     @NotNull

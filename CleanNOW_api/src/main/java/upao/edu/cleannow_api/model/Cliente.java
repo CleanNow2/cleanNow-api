@@ -17,7 +17,7 @@ public class Cliente extends Usuario {
     @Column(name = "preferencias")
     private String preferencias;
 
-    public Cliente(long idUser, String nombre, String apellido, String email, String dni, int numberPhone, String ciudad, String password, String rol, String preferencias) {
+    public Cliente(long idUser, String nombre, String apellido, String email, String dni, String numberPhone, String ciudad, String password, String rol, String preferencias) {
         super(idUser, nombre, apellido, email, dni, numberPhone, ciudad, password, rol);
         this.preferencias = preferencias;
     }

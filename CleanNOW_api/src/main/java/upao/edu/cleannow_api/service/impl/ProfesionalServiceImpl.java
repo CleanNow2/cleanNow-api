@@ -31,10 +31,9 @@ public class ProfesionalServiceImpl extends CRUDImpl<Profesional, Integer> imple
 
     @Override
     public Profesional save(Profesional profesional) throws Exception {
-        Usuario usuario = profesional;
-        String dni= usuario.getDni();
-        String email = usuario.getEmail();
-        int numberPhone = usuario.getNumberPhone();
+        String dni= profesional.getDni();
+        String email = profesional.getEmail();
+        String numberPhone = profesional.getNumberPhone();
 
         if (isUsuarioDuplicate(dni, email, numberPhone)) {
             throw new DataAlreadyExistsException("Dni y/o Email y/o número ya registrado.");
@@ -75,17 +74,17 @@ public class ProfesionalServiceImpl extends CRUDImpl<Profesional, Integer> imple
     }
 
     @Override
-    public boolean isProfesionalDuplicate(String dni, String email, int numberPhone) {
+    public boolean isProfesionalDuplicate(String dni, String email, String numberPhone) {
         return repo.existsByDniOrEmailOrNumberPhone(dni, email, numberPhone);
     }
 
     @Override
-    public boolean isProfesionalDuplicateUpdate(String dni, String email, int numberPhone) {
+    public boolean isProfesionalDuplicateUpdate(String dni, String email, String numberPhone) {
         return repo.existsByDniAndEmailAndNumberPhone(dni, email, numberPhone);
     }
 
 
-    public boolean isUsuarioDuplicate(String dni, String email, int numberPhone) {
+    public boolean isUsuarioDuplicate(String dni, String email, String numberPhone) {
         return repo2.existsByDniOrEmailOrNumberPhone(dni, email, numberPhone);
     }
 }

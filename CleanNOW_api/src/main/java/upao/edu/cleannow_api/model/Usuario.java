@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class Usuario {
+public class Usuario {
     @Id
     @EqualsAndHashCode.Include
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public abstract class Usuario {
     @Column(name = "dni",nullable = false, unique = true)
     private String dni;
     @Column(name = "numberPhone",nullable = false, unique = true)
-    private int numberPhone;
+    private String numberPhone;
     @Column(name = "cuidad", nullable = false)
     private String ciudad;
     @Column(name = "password",nullable = false, length = 20)
@@ -36,7 +36,7 @@ public abstract class Usuario {
     private String rol;
 
 
-    public Usuario(long idUser, String nombre, String apellido, String email, String dni, int numberPhone, String ciudad, String password, String rol) {
+    public Usuario(long idUser, String nombre, String apellido, String email, String dni, String numberPhone, String ciudad, String password, String rol) {
         this.idUser = idUser;
         this.nombre = nombre;
         this.apellido = apellido;

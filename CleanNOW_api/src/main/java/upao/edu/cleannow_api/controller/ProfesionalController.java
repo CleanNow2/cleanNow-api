@@ -24,7 +24,7 @@ public class ProfesionalController {
 
     private final IProfesionalService service;
 
-    @Qualifier("profesionalesMapper")
+    @Qualifier("profesionalMapper")
     private final ModelMapper mapper;
 
     @PostMapping
@@ -39,7 +39,7 @@ public class ProfesionalController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ProfesionalDTO> update(@Valid @PathVariable("id") Integer idProfesional, @RequestBody ProfesionalDTO dto) throws Exception {
-        dto.setIdCliente(idProfesional);
+        dto.setIdUser(idProfesional);
         Profesional obj = service.update(convertToEntity(dto), idProfesional);
         return new ResponseEntity<>(convertToDto(obj), HttpStatus.OK);
     }

@@ -35,10 +35,9 @@ public class ClienteServiceImpl extends CRUDImpl<Cliente, Integer> implements IC
 
     @Override
     public Cliente save(Cliente cliente) throws Exception {
-        Usuario usuario = cliente;
-        String dni= usuario.getDni();
-        String email = usuario.getEmail();
-        int numberPhone = usuario.getNumberPhone();
+        String dni= cliente.getDni();
+        String email = cliente.getEmail();
+        String numberPhone = cliente.getNumberPhone();
 
         if (isUsuarioDuplicate(dni, email, numberPhone)) {
             throw new DataAlreadyExistsException("Dni y/o Email y/o número ya registrado.");
@@ -76,16 +75,16 @@ public class ClienteServiceImpl extends CRUDImpl<Cliente, Integer> implements IC
     }
 
     @Override
-    public boolean isClienteDuplicate(String dni, String email, int numberPhone) {
+    public boolean isClienteDuplicate(String dni, String email, String numberPhone) {
         return repo.existsByDniOrEmailOrNumberPhone(dni, email, numberPhone);
     }
 
     @Override
-    public boolean isClienteDuplicateUpdate(String dni, String email, int numberPhone) {
+    public boolean isClienteDuplicateUpdate(String dni, String email, String numberPhone) {
         return repo.existsByDniAndEmailAndNumberPhone(dni, email, numberPhone);
     }
 
-    public boolean isUsuarioDuplicate(String dni, String email, int numberPhone) {
+    public boolean isUsuarioDuplicate(String dni, String email, String numberPhone) {
         return repo2.existsByDniOrEmailOrNumberPhone(dni, email, numberPhone);
     }
 }

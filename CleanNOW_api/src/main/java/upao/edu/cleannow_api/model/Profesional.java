@@ -23,7 +23,7 @@ public class Profesional extends Usuario {
     @Column(name = "tarifa", nullable = false)
     private double tarifa;
 
-    public Profesional(long idUser, String nombre, String apellido, String email, String dni, int numberPhone, String ciudad, String password, String rol, String experiencia, String especialidades, double tarifa) {
+    public Profesional(long idUser, String nombre, String apellido, String email, String dni, String numberPhone, String ciudad, String password, String rol, String experiencia, String especialidades, double tarifa) {
         super(idUser, nombre, apellido, email, dni, numberPhone, ciudad, password, rol);
         this.experiencia = experiencia;
         this.especialidades = especialidades;

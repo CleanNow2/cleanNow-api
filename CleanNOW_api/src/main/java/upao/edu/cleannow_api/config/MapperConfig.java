@@ -7,13 +7,46 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import upao.edu.cleannow_api.dto.ClienteDTO;
 import upao.edu.cleannow_api.dto.ProfesionalDTO;
+import upao.edu.cleannow_api.dto.UsuarioDTO;
 import upao.edu.cleannow_api.model.Cliente;
 import upao.edu.cleannow_api.model.Profesional;
+import upao.edu.cleannow_api.model.Usuario;
 
 @Configuration
 public class MapperConfig {
 
     @Primary
+    @Bean("UsuarioMapper")
+    public ModelMapper UsuarioMapper(){
+        ModelMapper mapper = new ModelMapper();
+
+        TypeMap<UsuarioDTO, Usuario> typeMap1 = mapper.createTypeMap(UsuarioDTO.class, Usuario.class);
+        TypeMap<Usuario, UsuarioDTO> typeMap2 = mapper.createTypeMap(Usuario.class, UsuarioDTO.class);
+
+        typeMap1.addMapping(UsuarioDTO::getNombre, (dest, v) -> dest.setNombre((String) v));
+        typeMap2.addMapping(Usuario::getNombre, (dest, v) -> dest.setNombre((String) v));
+
+        typeMap1.addMapping(UsuarioDTO::getApellido, (dest, v) -> dest.setApellido((String) v));
+        typeMap2.addMapping(Usuario::getApellido, (dest, v) -> dest.setApellido((String) v));
+
+        typeMap1.addMapping(UsuarioDTO::getEmail, (dest, v) -> dest.setEmail((String) v));
+        typeMap2.addMapping(Usuario::getEmail, (dest, v) -> dest.setEmail((String) v));
+
+        typeMap1.addMapping(UsuarioDTO::getPassword, (dest, v) -> dest.setPassword((String) v));
+        typeMap2.addMapping(Usuario::getPassword, (dest, v) -> dest.setPassword((String) v));
+
+        typeMap1.addMapping(UsuarioDTO::getCiudad, (dest, v) -> dest.setCiudad((String) v));
+        typeMap2.addMapping(Usuario::getCiudad, (dest, v) -> dest.setCiudad((String) v));
+
+        typeMap1.addMapping(UsuarioDTO::getDni, (dest, v) -> dest.setDni((String) v));
+        typeMap2.addMapping(Usuario::getDni, (dest, v) -> dest.setDni((String) v));
+
+        typeMap1.addMapping(UsuarioDTO::getNumberPhone, (dest, v) -> dest.setNumberPhone((String) v));
+        typeMap2.addMapping(Usuario::getNumberPhone, (dest, v) -> dest.setNumberPhone((String) v));
+
+        return mapper;
+    }
+
     @Bean("ClienteMapper")
     public ModelMapper clienteMapper(){
         ModelMapper mapper = new ModelMapper();
@@ -21,6 +54,7 @@ public class MapperConfig {
         TypeMap<ClienteDTO, Cliente> typeMap1 = mapper.createTypeMap(ClienteDTO.class, Cliente.class);
         TypeMap<Cliente, ClienteDTO> typeMap2 = mapper.createTypeMap(Cliente.class, ClienteDTO.class);
         //super(idUser, nombre, apellido, dni, numberPhone, email, password)
+
         typeMap1.addMapping(ClienteDTO::getNombre, (dest, v) -> dest.setNombre((String) v));
         typeMap2.addMapping(Cliente::getNombre, (dest, v) -> dest.setNombre((String) v));
 
