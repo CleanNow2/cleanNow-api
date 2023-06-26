@@ -11,7 +11,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ProfesionalDTO {
+public class UsuarioDTO {
+
     private Integer idUser;
 
     @NotNull
@@ -60,19 +61,4 @@ public class ProfesionalDTO {
     @NotEmpty
     @Size(min = 3, max = 50)
     private String rol;
-
-    @NotNull
-    @NotEmpty
-    @Size(min = 3, max = 50)
-    private String experiencia;
-
-    @NotNull
-    @NotEmpty
-    @Size(min = 3, max = 50)
-    private String especialidades;
-
-    @NotNull
-    @DecimalMin(value = "1")
-    @DecimalMax(value = "200")
-    private double tarifa;
 }

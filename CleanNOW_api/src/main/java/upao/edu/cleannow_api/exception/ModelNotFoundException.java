@@ -1,4 +1,8 @@
 package upao.edu.cleannow_api.exception;
 
-public class ModelNotFoundException {
+
+public class ModelNotFoundException extends RuntimeException{
+    public ModelNotFoundException(String message){
+        super(message);
+    }
 }
