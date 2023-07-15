@@ -7,31 +7,28 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import upao.edu.cleannow_api.dto.ClienteDTO;
+import upao.edu.cleannow_api.dto.ServicioDTO;
 import upao.edu.cleannow_api.exception.DataAlreadyExistsException;
-import upao.edu.cleannow_api.model.Cliente;
-import upao.edu.cleannow_api.service.IClienteService;
+import upao.edu.cleannow_api.model.Servicio;
+import upao.edu.cleannow_api.service.IServicioLimpiezaService;
 
 import java.util.List;
-
 import java.util.stream.Collectors;
-
 @RestController
-@RequestMapping("/Clientes")
+@RequestMapping("/Servicios")
 @RequiredArgsConstructor
-@CrossOrigin("*")
-public class ClienteController {
+public class ServicioController {
 
 
-    private final IClienteService service;
+    private final IServicioLimpiezaService service;
 
-    @Qualifier("ClienteMapper")
+    @Qualifier("ServicioMapper")
     private final ModelMapper mapper;
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody ClienteDTO dto) throws Exception {
+    public ResponseEntity<?> create(@Valid @RequestBody ServicioDTO dto) throws Exception {
         try {
-            Cliente obj = service.save(convertToEntity(dto));
+            Servicio obj = service.save(convertToEntity(dto));
             return new ResponseEntity<>(convertToDto(obj), HttpStatus.CREATED);
         }catch (DataAlreadyExistsException e){
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -39,15 +36,15 @@ public class ClienteController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClienteDTO> update(@Valid @PathVariable("id") Integer id, @RequestBody ClienteDTO dto) throws Exception {
-        dto.setIdUser(id);
-        Cliente obj = service.update(convertToEntity(dto), id);
+    public ResponseEntity<ServicioDTO> update(@Valid @PathVariable("id") Integer id, @RequestBody ServicioDTO dto) throws Exception {
+        dto.setIdService(id);
+        Servicio obj = service.update(convertToEntity(dto), id);
         return new ResponseEntity<>(convertToDto(obj), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<ClienteDTO>>  readAll() throws Exception{
-        List<ClienteDTO> list = service.readAll().stream().map(this::convertToDto).collect(Collectors.toList());
+    public ResponseEntity<List<ServicioDTO>>  readAll() throws Exception{
+        List<ServicioDTO> list = service.readAll().stream().map(this::convertToDto).collect(Collectors.toList());
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
 
@@ -58,19 +55,19 @@ public class ClienteController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ClienteDTO> readById(@PathVariable("id") Integer id) throws Exception{
-        Cliente obj = service.readById(id);
+    public ResponseEntity<ServicioDTO> readById(@PathVariable("id") Integer id) throws Exception{
+        Servicio obj = service.readById(id);
         return new ResponseEntity<>(convertToDto(obj), HttpStatus.OK);
     }
 
     /////////////////////convert mapper//////////////////
 
-    private ClienteDTO convertToDto(Cliente obj){
-        return mapper.map(obj, ClienteDTO.class);
+    private ServicioDTO convertToDto(Servicio obj){
+        return mapper.map(obj, ServicioDTO.class);
     }
 
-    private Cliente convertToEntity(ClienteDTO dto){
+    private Servicio convertToEntity(ServicioDTO dto){
 
-        return mapper.map(dto, Cliente.class);
+        return mapper.map(dto, Servicio.class);
     }
 }

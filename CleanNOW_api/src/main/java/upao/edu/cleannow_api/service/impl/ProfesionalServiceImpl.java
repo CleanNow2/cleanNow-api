@@ -5,8 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import upao.edu.cleannow_api.exception.DataAlreadyExistsException;
 import upao.edu.cleannow_api.exception.ModelNotFoundException;
+import upao.edu.cleannow_api.model.Cliente;
 import upao.edu.cleannow_api.model.Profesional;
-import upao.edu.cleannow_api.model.Usuario;
+import upao.edu.cleannow_api.repository.IClienteRepository;
 import upao.edu.cleannow_api.repository.IGenericRepository;
 import upao.edu.cleannow_api.repository.IProfesionalRepository;
 import upao.edu.cleannow_api.repository.IUsuarioRepository;
@@ -19,24 +20,23 @@ import java.util.List;
 public class ProfesionalServiceImpl extends CRUDImpl<Profesional, Integer> implements IProfesionalService{
 
     private final IProfesionalRepository repo;
-    private final IUsuarioRepository repo2;
 
     @Autowired
     private IProfesionalRepository profesionalRepository;
 
     @Override
     protected IGenericRepository<Profesional, Integer> getRepo() {
+
         return repo;
     }
 
     @Override
     public Profesional save(Profesional profesional) throws Exception {
         String dni= profesional.getDni();
-        String email = profesional.getEmail();
-        String numberPhone = profesional.getNumberPhone();
+        String numberPhone= profesional.getNumberPhone();
 
-        if (isUsuarioDuplicate(dni, email, numberPhone)) {
-            throw new DataAlreadyExistsException("Dni y/o Email y/o número ya registrado.");
+        if (isProfesionalDuplicate(dni, numberPhone)) {
+            throw new DataAlreadyExistsException("Dni y/o número ya registrado.");
         }
 
         return super.save(profesional);
@@ -48,12 +48,8 @@ public class ProfesionalServiceImpl extends CRUDImpl<Profesional, Integer> imple
 
         profesionalUpdate.setNombre(profesional.getNombre());
         profesionalUpdate.setApellido(profesional.getApellido());
-        profesionalUpdate.setPassword(profesional.getPassword());
         profesionalUpdate.setNumberPhone(profesional.getNumberPhone());
-        profesionalUpdate.setEmail(profesional.getEmail());
-        profesionalUpdate.setEspecialidades(profesional.getEspecialidades());
         profesionalUpdate.setExperiencia(profesional.getExperiencia());
-        profesionalUpdate.setTarifa(profesional.getTarifa());
 
         return super.update(profesionalUpdate,idProfesional);
     }
@@ -72,19 +68,8 @@ public class ProfesionalServiceImpl extends CRUDImpl<Profesional, Integer> imple
     public Profesional readById(Integer id) throws Exception, DataAlreadyExistsException{
         return super.readById(id);
     }
-
     @Override
-    public boolean isProfesionalDuplicate(String dni, String email, String numberPhone) {
-        return repo.existsByDniOrEmailOrNumberPhone(dni, email, numberPhone);
-    }
-
-    @Override
-    public boolean isProfesionalDuplicateUpdate(String dni, String email, String numberPhone) {
-        return repo.existsByDniAndEmailAndNumberPhone(dni, email, numberPhone);
-    }
-
-
-    public boolean isUsuarioDuplicate(String dni, String email, String numberPhone) {
-        return repo2.existsByDniOrEmailOrNumberPhone(dni, email, numberPhone);
+    public boolean isProfesionalDuplicate(String dni, String numberPhone) {
+        return repo.existsByDniOrNumberPhone(dni, numberPhone);
     }
 }

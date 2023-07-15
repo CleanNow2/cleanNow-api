@@ -5,31 +5,39 @@ import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.validator.constraints.NotEmpty;
+import upao.edu.cleannow_api.model.UsuarioRol;
+
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
+
 public class UsuarioDTO {
 
     private Integer idUser;
 
+    @Size(min = 3, max = 50)
+    private String username;
+
     @NotNull
-    @NotEmpty
+    @Email
+    @Size(min = 3, max = 50)
+    private String email;
+
+    @NotNull
     @Size(min = 3, max = 50)
     @Pattern(regexp = "[A-Za-z ]*")
     private String nombre;
 
 
     @NotNull
-    @NotEmpty
     @Size(min = 3, max = 50)
     @Pattern(regexp = "[A-Za-z ]*")
     private String apellido;
 
     @NotNull
-    @NotEmpty
     @Size(min = 8, max = 8)
     @Pattern(regexp = "\\d+")
     private String dni;
@@ -40,25 +48,17 @@ public class UsuarioDTO {
     private String numberPhone;
 
     @NotNull
-    @NotEmpty
-    @Email
-    @Size(min = 3, max = 50)
-    private String email;
-
-
-    @NotNull
-    @NotEmpty
-    @Size(min = 8, max = 50)
-    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$")
-    private String password;
-
-    @NotNull
-    @NotEmpty
     @Size(min = 3, max = 50)
     private String ciudad;
 
     @NotNull
-    @NotEmpty
-    @Size(min = 3, max = 50)
-    private String rol;
+    @Size(min = 8, max = 50)
+    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$")
+    private String password;
+
+    private boolean enable = true;
+
+    private String perfil;
+
+    private Set<UsuarioRol> usuarioRoles = new HashSet<>();
 }
