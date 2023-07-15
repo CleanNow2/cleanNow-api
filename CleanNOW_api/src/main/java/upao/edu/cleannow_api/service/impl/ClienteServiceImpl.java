@@ -1,21 +1,17 @@
 package upao.edu.cleannow_api.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.hibernate.internal.util.type.PrimitiveWrapperHelper;
-import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import upao.edu.cleannow_api.exception.DataAlreadyExistsException;
 import upao.edu.cleannow_api.exception.ModelNotFoundException;
 import upao.edu.cleannow_api.model.Cliente;
-import upao.edu.cleannow_api.model.Usuario;
 import upao.edu.cleannow_api.repository.IClienteRepository;
 import upao.edu.cleannow_api.repository.IGenericRepository;
 import upao.edu.cleannow_api.repository.IUsuarioRepository;
 import upao.edu.cleannow_api.service.IClienteService;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -23,24 +19,23 @@ import java.util.Optional;
 public class ClienteServiceImpl extends CRUDImpl<Cliente, Integer> implements IClienteService {
 
     private final IClienteRepository repo;
-    private final IUsuarioRepository repo2;
 
     @Autowired
-    private IUsuarioRepository clienteRepository;
+    private IClienteRepository clienteRepository;
 
     @Override
     protected IGenericRepository<Cliente, Integer> getRepo() {
+
         return repo;
     }
 
     @Override
     public Cliente save(Cliente cliente) throws Exception {
         String dni= cliente.getDni();
-        String email = cliente.getEmail();
-        String numberPhone = cliente.getNumberPhone();
+        String numberPhone= cliente.getNumberPhone();
 
-        if (isUsuarioDuplicate(dni, email, numberPhone)) {
-            throw new DataAlreadyExistsException("Dni y/o Email y/o número ya registrado.");
+        if (isClienteDuplicate(dni, numberPhone)) {
+            throw new DataAlreadyExistsException("Dni y/o número ya registrado.");
         }
 
         return super.save(cliente);
@@ -52,9 +47,7 @@ public class ClienteServiceImpl extends CRUDImpl<Cliente, Integer> implements IC
 
         clienteUpdate.setNombre(cliente.getNombre());
         clienteUpdate.setApellido(cliente.getApellido());
-        clienteUpdate.setPassword(cliente.getPassword());
         clienteUpdate.setNumberPhone(cliente.getNumberPhone());
-        clienteUpdate.setEmail(cliente.getEmail());
 
         return super.update(clienteUpdate,idCliente);
     }
@@ -75,16 +68,8 @@ public class ClienteServiceImpl extends CRUDImpl<Cliente, Integer> implements IC
     }
 
     @Override
-    public boolean isClienteDuplicate(String dni, String email, String numberPhone) {
-        return repo.existsByDniOrEmailOrNumberPhone(dni, email, numberPhone);
+    public boolean isClienteDuplicate(String dni, String numberPhone) {
+        return repo.existsByDniOrNumberPhone(dni, numberPhone);
     }
 
-    @Override
-    public boolean isClienteDuplicateUpdate(String dni, String email, String numberPhone) {
-        return repo.existsByDniAndEmailAndNumberPhone(dni, email, numberPhone);
-    }
-
-    public boolean isUsuarioDuplicate(String dni, String email, String numberPhone) {
-        return repo2.existsByDniOrEmailOrNumberPhone(dni, email, numberPhone);
-    }
 }

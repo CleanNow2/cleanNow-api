@@ -6,12 +6,14 @@ import org.springframework.stereotype.Service;
 import upao.edu.cleannow_api.exception.DataAlreadyExistsException;
 import upao.edu.cleannow_api.exception.ModelNotFoundException;
 import upao.edu.cleannow_api.model.Usuario;
+import upao.edu.cleannow_api.model.UsuarioRol;
 import upao.edu.cleannow_api.repository.IGenericRepository;
+import upao.edu.cleannow_api.repository.IRolRepository;
 import upao.edu.cleannow_api.repository.IUsuarioRepository;
-import upao.edu.cleannow_api.service.ICRUD;
 import upao.edu.cleannow_api.service.IUsuarioService;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -21,6 +23,8 @@ public class UsuarioServiceImpl extends CRUDImpl<Usuario, Integer> implements IU
 
     @Autowired
     private IUsuarioRepository usuarioRepository;
+    @Autowired
+    private IRolRepository rolRepository;
 
     @Override
     protected IGenericRepository<Usuario, Integer> getRepo() {
@@ -28,33 +32,33 @@ public class UsuarioServiceImpl extends CRUDImpl<Usuario, Integer> implements IU
     }
 
     @Override
-    public Usuario save(Usuario usuario) throws Exception {
-        String dni= usuario.getDni();
-        String email = usuario.getEmail();
-        String numberPhone = usuario.getNumberPhone();
+    public Usuario save(Usuario usuario, Set<UsuarioRol> usuarioRoles) throws Exception {
+        Usuario usuarioLocal = usuarioRepository.findByUsername(usuario.getUsername());
 
-        if (isUsuarioDuplicate(dni, email, numberPhone)) {
-            throw new DataAlreadyExistsException("Dni y/o Email y/o número ya registrado.");
+        if (usuarioLocal != null) {
+            throw new DataAlreadyExistsException("Usuario ya registrado.");
+        } else {
+            for (UsuarioRol usuarioRol : usuarioRoles) {
+                rolRepository.save(usuarioRol.getRol());
+            }
+            usuario.getUsuarioRoles().addAll(usuarioRoles);
+            usuarioLocal = usuarioRepository.save(usuario);
         }
 
-        return super.save(usuario);
+        return super.save(usuarioLocal);
     }
 
     @Override
     public Usuario update(Usuario usuario, Integer idUsuario) throws Exception {
-        Usuario usuarioUpdate = getRepo().findById(idUsuario).orElseThrow( () -> new ModelNotFoundException("El profesional con id " + idUsuario + " no existe."));
+        Usuario usuarioUpdate = getRepo().findById(idUsuario).orElseThrow(() -> new ModelNotFoundException("El profesional con id " + idUsuario + " no existe."));
 
-        usuarioUpdate.setNombre(usuario.getNombre());
-        usuarioUpdate.setApellido(usuario.getApellido());
         usuarioUpdate.setPassword(usuario.getPassword());
-        usuarioUpdate.setNumberPhone(usuario.getNumberPhone());
-        usuarioUpdate.setEmail(usuario.getEmail());
 
-        return super.update(usuarioUpdate,idUsuario);
+        return super.update(usuarioUpdate, idUsuario);
     }
 
     @Override
-    public void delete(Integer id) throws Exception{
+    public void delete(Integer id) throws Exception {
         super.delete(id);
     }
 
@@ -66,10 +70,5 @@ public class UsuarioServiceImpl extends CRUDImpl<Usuario, Integer> implements IU
     @Override
     public Usuario readById(Integer id) throws Exception, DataAlreadyExistsException {
         return super.readById(id);
-    }
-
-    @Override
-    public boolean isUsuarioDuplicate(String dni, String email,String numberPhone) {
-        return repo.existsByDniOrEmailOrNumberPhone(dni, email, numberPhone);
     }
 }

@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import upao.edu.cleannow_api.dto.ProfesionalDTO;;
 import upao.edu.cleannow_api.exception.DataAlreadyExistsException;
-import upao.edu.cleannow_api.model.Cliente;
 import upao.edu.cleannow_api.model.Profesional;
 import upao.edu.cleannow_api.service.IProfesionalService;
 
@@ -19,12 +18,12 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/Profesionales")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class ProfesionalController {
-
 
     private final IProfesionalService service;
 
-    @Qualifier("profesionalMapper")
+    @Qualifier("ProfesionalMapper")
     private final ModelMapper mapper;
 
     @PostMapping
@@ -38,9 +37,9 @@ public class ProfesionalController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ProfesionalDTO> update(@Valid @PathVariable("id") Integer idProfesional, @RequestBody ProfesionalDTO dto) throws Exception {
-        dto.setIdUser(idProfesional);
-        Profesional obj = service.update(convertToEntity(dto), idProfesional);
+    public ResponseEntity<ProfesionalDTO> update(@Valid @PathVariable("id") Integer id, @RequestBody ProfesionalDTO dto) throws Exception {
+        dto.setIdUser(id);
+        Profesional obj = service.update(convertToEntity(dto), id);
         return new ResponseEntity<>(convertToDto(obj), HttpStatus.OK);
     }
 

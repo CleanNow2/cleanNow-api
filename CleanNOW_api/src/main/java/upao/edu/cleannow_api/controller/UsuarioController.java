@@ -11,15 +11,20 @@ import upao.edu.cleannow_api.dto.ProfesionalDTO;
 import upao.edu.cleannow_api.dto.UsuarioDTO;
 import upao.edu.cleannow_api.exception.DataAlreadyExistsException;
 import upao.edu.cleannow_api.model.Profesional;
+import upao.edu.cleannow_api.model.Rol;
 import upao.edu.cleannow_api.model.Usuario;
+import upao.edu.cleannow_api.model.UsuarioRol;
 import upao.edu.cleannow_api.service.IProfesionalService;
 import upao.edu.cleannow_api.service.IUsuarioService;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/Usuarios")
 @RequiredArgsConstructor
+@CrossOrigin("*")
 public class UsuarioController {
     private final IUsuarioService service;
 
@@ -29,7 +34,17 @@ public class UsuarioController {
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody UsuarioDTO dto) throws Exception {
         try {
-            Usuario obj = service.save(convertToEntity(dto));
+            dto.setPerfil("default.png");
+            Set<UsuarioRol> roles = new HashSet<>();
+
+            Rol rol = new Rol();
+            rol.setRolId(2L);
+            rol.setNombre("NORMAL");
+
+            UsuarioRol usuarioRol = new UsuarioRol();
+            usuarioRol.setUsuario(convertToEntity(dto));
+            usuarioRol.setRol(rol);
+            Usuario obj = service.save(convertToEntity(dto),roles);
             return new ResponseEntity<>(convertToDto(obj), HttpStatus.CREATED);
         }catch (DataAlreadyExistsException e){
             return ResponseEntity.badRequest().body(e.getMessage());
